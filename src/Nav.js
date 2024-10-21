@@ -5,6 +5,7 @@ function Nav() {
   return (
     <div>
       <div className="navbar">
+        <h1>Nobel Winner</h1>
         <Link className="navbarMenu" to="/">
           Home
         </Link>
