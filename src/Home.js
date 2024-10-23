@@ -1,10 +1,11 @@
 import React from "react";
-function Home() {
+import SearchBox from "./SearchBox";
+const Home = ({ onSearch }) => {
   return (
     <div>
-      <h1>Home</h1>
-      <p>Welcome to the Nobel Prize website!</p>
+      <SearchBox onSearch={onSearch} /> {/* onSearch prop 전달 */}
     </div>
   );
-}
+};
+
 export default Home;

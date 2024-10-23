@@ -7,23 +7,29 @@
   text-align: left;
 }
 
+.navbarTitle {
+  text-decoration: none; /* Link 태그의 기본 밑줄 제거 */
+}
+
+.navbarTitle h1 {
+  font-size: 36px; /* Nobel Winners의 크기를 더 크게 설정 */
+  font-weight: bold; /* 글자 굵게 설정 */
+  margin-left: 20px;
+  color: black;
+  text-decoration: none; /* h1 태그의 밑줄도 제거 */
+}
+
+.navbarTitle h1:hover {
+  text-decoration: underline; /* 마우스를 올리면 밑줄 표시 */
+}
+
 .navbarMenu {
   color: black;
-  margin-left: 20px; /* 링크 간의 간격 설정 */
+  margin-left: 20px;
+  font-size: 18px; /* 나머지 메뉴의 크기는 기본보다 작게 설정 */
   text-decoration: none;
 }
 
 .navbarMenu:hover {
-  text-decoration: underline; /* 마우스를 올리면 밑줄 표시 */
-}
-
-.h1 {
-  color: black;
-  margin: 0 20px; /* 제목과 링크 간의 여백 */
-  font-size: 30px;
-}
-
-.navbar h1 {
-  margin-left: 20px; /* 제목 위치 설정 */
-  font-size: 30px;
+  text-decoration: underline;
 }
