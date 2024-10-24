@@ -9,20 +9,31 @@ function SearchBox({ onSearch }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // 조건에 맞게 쿼리 스트링을 동적으로 구성
-    let apiUrl = "https://api.nobelprize.org/2.1/laureates?";
-    if (query) apiUrl += `name=${query}&`;
-    if (year) apiUrl += `nobelPrizeYear=${year}&`;
-    if (prizeCategory) apiUrl += `nobelPrizeCategory=${prizeCategory}&`;
-
-    // URL 끝에 불필요한 "&"를 제거
-    apiUrl = apiUrl.slice(0, -1);
-
     try {
+      // API URL 기본 경로
+      let apiUrl = `https://api.nobelprize.org/2.1/laureates?`;
+
+      // 이름이 있으면 이름 필터 추가
+      if (query) apiUrl += `name=${query}&`;
+
+      // 수상 연도가 있으면 연도 필터 추가
+      if (year) apiUrl += `nobelPrizeYear=${year}&`;
+
+      // 상의 종류가 있으면 상 종류 필터 추가
+      if (prizeCategory) apiUrl += `nobelPrizeCategory=${prizeCategory}`;
+
       const response = await fetch(apiUrl);
       const data = await response.json();
-      onSearch(data.laureates || []); // 검색 결과 업데이트
+
+      // API에서 받아온 데이터 중 이름이 query로 시작하는 항목만 필터링
+      const filteredData = data.laureates.filter((laureate) =>
+        laureate.fullName.en.toLowerCase().startsWith(query.toLowerCase())
+      );
+
+      console.log(filteredData); // 필터링된 데이터 확인
+
+      // 검색 결과를 부모 컴포넌트로 전달
+      onSearch(filteredData || []);
       navigate("/search-results");
     } catch (error) {
       console.error("Error fetching data:", error);

@@ -9,17 +9,12 @@ import SearchResults from "./SearchResults";
 function App() {
   const [searchResults, setSearchResults] = useState([]);
 
-  const handleSearch = (results) => {
-    setSearchResults(results); // 검색 결과를 업데이트하는 로직 추가
-  };
-
   return (
     <BrowserRouter>
       <div>
         <Nav />
         <Routes>
-          <Route path="/" element={<Home onSearch={handleSearch} />} />{" "}
-          {/* onSearch prop 추가 */}
+          <Route path="/" element={<Home onSearch={setSearchResults} />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
           <Route
@@ -31,4 +26,5 @@ function App() {
     </BrowserRouter>
   );
 }
+
 export default App;
