@@ -42,6 +42,8 @@ function SearchBox({ onSearch }) {
 
   return (
     <form onSubmit={handleSubmit}>
+      <h1>Discover Nobel Prize Winners</h1>
+      <h2>Explore the achivements of laureates!</h2>
       <input
         type="text"
         value={query}
