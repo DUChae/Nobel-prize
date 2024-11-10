@@ -16,7 +16,13 @@ function RecentLaureates() {
               ? `${laureate.motivation.en.slice(0, 100)}...`
               : laureate.motivation.en
           ),
-          name: prize.laureates.map((laureate) => laureate.knownName?.en),
+          // 단체의 경우 orgName 필드에서 가져오도록 설정
+          name: prize.laureates.map(
+            (laureate) =>
+              laureate.knownName?.en ||
+              `${laureate.firstname || ""} ${laureate.surname || ""}`.trim() ||
+              laureate.orgName?.en
+          ),
         }));
         setLaureates(filteredLaureates);
       })
@@ -29,10 +35,12 @@ function RecentLaureates() {
       <ul className="laureate-list">
         {laureates.map((laureate, index) => (
           <li key={index} className="laureate-card">
-            <h3 className="laureate-name">{laureate.name}</h3>
+            <h3 className="laureate-name">{laureate.name.join(", ")}</h3>
             <p className="laureate-category">Category: {laureate.category}</p>
             <p className="laureate-year">Year: {laureate.year}</p>
-            <p className="laureate-motivation">{laureate.motivation}</p>
+            <p className="laureate-motivation">
+              Motivation: {laureate.motivation.join(" | ")}
+            </p>
           </li>
         ))}
       </ul>

@@ -1,51 +1,42 @@
-/* 전체 컨테이너 설정 */
 .recent-laureates-container {
   padding: 20px;
-  overflow-x: auto; /* 가로 스크롤 허용 */
-  white-space: nowrap; /* 요소들을 가로로 나열 */
 }
 
-/* 각 카드들의 스타일 */
 .laureate-list {
-  display: flex; /* 가로로 나열 */
-  gap: 20px; /* 카드 사이 간격 */
-  padding: 0;
-  margin: 0;
+  display: flex;
+  overflow-x: auto;
+  gap: 20px;
+  padding: 10px;
 }
 
 .laureate-card {
+  min-width: 300px;
+  max-width: 300px;
+  padding: 15px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
   background-color: #f9f9f9;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  padding: 20px;
-  width: 200px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  display: inline-block; /* 가로 나열에 맞게 조정 */
-  vertical-align: top; /* 세로 위치 조정 */
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
 }
 
-/* 이름 텍스트 길이 제한 */
-/* 이름 텍스트 크기 조정 */
 .laureate-name {
-  font-size: 16px; /* 텍스트 크기를 줄임 */
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: block;
-  max-width: 190px; /* 너비 약간 확대 */
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 8px;
+  white-space: nowrap; /* 줄바꿈 방지 */
+  overflow: hidden; /* 카드 영역을 넘을 시 숨기기 */
+  text-overflow: ellipsis; /* 카드가 넘칠 때 '...' 표시 */
 }
 
 .laureate-category,
 .laureate-year,
 .laureate-motivation {
-  margin: 0;
-  margin-bottom: 10px;
+  margin-bottom: 6px;
 }
 
-/* motivation 텍스트 줄 수 제한 */
 .laureate-motivation {
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  -webkit-line-clamp: 3;
+  font-size: 0.9rem;
+  color: #555;
 }
