@@ -31,7 +31,7 @@ function RecentLaureates() {
 
   return (
     <div className="recent-laureates-container">
-      <h2>Recent Laureates</h2>
+      <h2>Notable laureates' works</h2>
       <ul className="laureate-list">
         {laureates.map((laureate, index) => (
           <li key={index} className="laureate-card">
