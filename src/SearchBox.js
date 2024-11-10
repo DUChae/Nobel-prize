@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import "./SearchBox.css";
 
 function SearchBox({ onSearch }) {
   const [query, setQuery] = useState("");
@@ -41,29 +42,29 @@ function SearchBox({ onSearch }) {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h1>Discover Nobel Prize Winners</h1>
-      <h2>Explore the achivements of laureates!</h2>
-      <input
-        type="text"
-        value={query}
-        onChange={(e) => setQuery(e.target.value)}
-        placeholder="이름 검색"
-      />
-      <input
-        type="text"
-        value={year}
-        onChange={(e) => setYear(e.target.value)}
-        placeholder="수상 연도"
-      />
-      <input
-        type="text"
-        value={prizeCategory}
-        onChange={(e) => setPrizeCategory(e.target.value)}
-        placeholder="수상 종류"
-      />
-      <button type="submit">검색</button>
-    </form>
+    <div className="search-container">
+      <form onSubmit={handleSubmit}>
+        <input
+          type="text"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          placeholder="이름 검색"
+        />
+        <input
+          type="text"
+          value={year}
+          onChange={(e) => setYear(e.target.value)}
+          placeholder="수상 연도"
+        />
+        <input
+          type="text"
+          value={prizeCategory}
+          onChange={(e) => setPrizeCategory(e.target.value)}
+          placeholder="수상 종류"
+        />
+        <button type="submit">검색</button>
+      </form>
+    </div>
   );
 }
 

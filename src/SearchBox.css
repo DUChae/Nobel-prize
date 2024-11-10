@@ -1,0 +1,77 @@
+/* 전체 컨테이너 */
+.search-container {
+  width: 100%;
+  max-width: 800px; /* 최대 너비 설정 */
+  margin: 50px auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* 제목 */
+h1 {
+  font-size: 1.8rem;
+  color: #333;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+/* 부제목 */
+h2 {
+  font-size: 1.2rem;
+  color: #777;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+/* form 스타일 */
+form {
+  display: flex;
+  flex-direction: row; /* 가로로 배치 */
+  justify-content: space-between; /* 각 항목 사이에 여백을 두고 */
+  align-items: center; /* 세로로 가운데 정렬 */
+  gap: 20px; /* 각 필드 간 간격 */
+}
+
+/* 입력 필드 스타일 */
+input {
+  width: 30%; /* 각 입력 필드의 너비를 30%로 설정 */
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 1rem;
+  box-sizing: border-box; /* 패딩과 테두리가 포함되게 */
+}
+
+/* 입력 필드 포커스 스타일 */
+input:focus {
+  border-color: #007bff;
+  outline: none;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+/* 버튼 스타일 */
+button {
+  width: 20%; /* 버튼 너비는 입력 필드보다 작게 설정 */
+  padding: 12px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  box-sizing: border-box;
+  transition: background-color 0.3s ease;
+}
+
+/* 버튼 hover 스타일 */
+button:hover {
+  background-color: #0056b3;
+}
+
+/* 버튼 disabled 상태 */
+button:disabled {
+  background-color: #d3d3d3;
+  cursor: not-allowed;
+}

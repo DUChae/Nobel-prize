@@ -1,0 +1,31 @@
+/* Title 컴포넌트 */
+.title-container {
+  text-align: center;
+  padding-top: 100px; /* 텍스트가 중앙보다 조금 더 높게 위치하도록 설정 */
+  padding-bottom: 10px; /* 제목 아래에 여백 */
+  color: white;
+  background-image: url("./images/background.jpg"); /* 배경 이미지 */
+  background-size: cover;
+  background-position: top center;
+  min-height: 37vh; /* 화면의 상단 40%만 배경 이미지로 사용 */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start; /* flex-start로 조정하여 텍스트가 중앙보다 위로 위치 */
+}
+
+.title-container h1 {
+  font-size: 3rem;
+  font-weight: bold;
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
+  margin: 0;
+}
+
+.title-container h2 {
+  font-size: 1.5rem;
+  font-weight: lighter;
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
+  margin-top: 10px;
+  max-width: 80%; /* 부제목의 최대 너비 */
+  line-height: 1.5;
+}
