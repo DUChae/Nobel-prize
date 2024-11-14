@@ -1,11 +1,10 @@
-// App.js
 import React, { useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./Home";
 import About from "./About";
 import Contact from "./Contact";
 import SearchResults from "./SearchResults";
-import CategoryResults from "./CategoryResults";
+import CategoryDetails from "./CategoryDetails";
 import Nav from "./Nav";
 
 function App() {
@@ -22,7 +21,8 @@ function App() {
           path="/search-results"
           element={<SearchResults searchResults={searchResults} />}
         />
-        <Route path="/category/:category" element={<CategoryResults />} />
+        {/* CategoryDetails now automatically gets the category from the URL */}
+        <Route path="/category/:category" element={<CategoryDetails />} />
       </Routes>
     </BrowserRouter>
   );

@@ -10,20 +10,6 @@
 }
 
 /* 제목 */
-h1 {
-  font-size: 1.8rem;
-  color: #333;
-  margin-bottom: 10px;
-  text-align: center;
-}
-
-/* 부제목 */
-h2 {
-  font-size: 1.2rem;
-  color: #777;
-  margin-bottom: 20px;
-  text-align: center;
-}
 
 /* form 스타일 */
 form {
