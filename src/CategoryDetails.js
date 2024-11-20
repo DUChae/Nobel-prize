@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
+import "./CategoryDetails.css";
 
 const CategoryDetails = () => {
-  const { category } = useParams(); // Get the category from the URL
+  const { category } = useParams();
   const [winners, setWinners] = useState([]);
   const [error, setError] = useState(null);
 
@@ -12,7 +13,6 @@ const CategoryDetails = () => {
       return;
     }
 
-    // Fetch the winners based on the selected category
     const fetchWinners = async () => {
       try {
         const response = await fetch(
@@ -33,8 +33,8 @@ const CategoryDetails = () => {
   }, [category]);
 
   return (
-    <div>
-      {error && <p>{error}</p>}
+    <div className="category-details">
+      {error && <p className="error">{error}</p>}
       {category && !error && (
         <>
           <h2>
@@ -44,14 +44,18 @@ const CategoryDetails = () => {
             {winners.length > 0 ? (
               winners.map((prize, index) => (
                 <li key={index}>
-                  {prize.year}:{" "}
+                  <strong>{prize.year}:</strong>
                   {prize.laureates && prize.laureates.length > 0 ? (
-                    prize.laureates
-                      .map(
-                        (laureate) =>
-                          `${laureate.firstname} ${laureate.surname}`
-                      )
-                      .join(", ")
+                    <ul>
+                      {prize.laureates.map((laureate) => (
+                        <li key={laureate.id}>
+                          <strong>Name:</strong>{" "}
+                          {`${laureate.firstname} ${laureate.surname}`} <br />
+                          <strong>Motivation:</strong>{" "}
+                          {laureate.motivation || "No motivation available"}
+                        </li>
+                      ))}
+                    </ul>
                   ) : (
                     <span>No laureates for this prize.</span>
                   )}
