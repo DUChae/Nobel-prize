@@ -1,40 +1,39 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./SearchBox.css";
+import type { LaureateResult } from "./SearchResults"; // 핵심!
 
-function SearchBox({ onSearch }) {
-  const [query, setQuery] = useState("");
-  const [year, setYear] = useState("");
-  const [prizeCategory, setPrizeCategory] = useState("");
+interface SearchBoxProps {
+  onSearch: (results: LaureateResult[]) => void;
+}
+
+const SearchBox: React.FC<SearchBoxProps> = ({ onSearch }) => {
+  const [query, setQuery] = useState<string>("");
+  const [year, setYear] = useState<string>("");
+  const [prizeCategory, setPrizeCategory] = useState<string>("");
+
   const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
     try {
-      // API URL 기본 경로
       let apiUrl = `https://api.nobelprize.org/2.1/laureates?`;
 
-      // 이름이 있으면 이름 필터 추가
       if (query) apiUrl += `name=${query}&`;
-
-      // 수상 연도가 있으면 연도 필터 추가
       if (year) apiUrl += `nobelPrizeYear=${year}&`;
-
-      // 상의 종류가 있으면 상 종류 필터 추가
       if (prizeCategory) apiUrl += `nobelPrizeCategory=${prizeCategory}`;
 
       const response = await fetch(apiUrl);
       const data = await response.json();
 
-      // API에서 받아온 데이터 중 이름이 query로 시작하는 항목만 필터링
-      const filteredData = data.laureates.filter((laureate) =>
-        laureate.fullName.en.toLowerCase().startsWith(query.toLowerCase())
-      );
+      const filteredData: LaureateResult[] =
+        data.laureates?.filter((laureate: LaureateResult) => {
+          const fullName = laureate.fullName?.en || "";
+          return fullName.toLowerCase().startsWith(query.toLowerCase());
+        }) || [];
 
-      console.log(filteredData); // 필터링된 데이터 확인
-
-      // 검색 결과를 부모 컴포넌트로 전달
-      onSearch(filteredData || []);
+      onSearch(filteredData);
       navigate("/search-results");
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -66,6 +65,6 @@ function SearchBox({ onSearch }) {
       </form>
     </div>
   );
-}
+};
 
 export default SearchBox;

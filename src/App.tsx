@@ -1,14 +1,15 @@
-import React, { useState } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { useState } from "react";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Nav from "./Nav";
 import Home from "./Home";
 import About from "./About";
 import Contact from "./Contact";
 import SearchResults from "./SearchResults";
 import CategoryDetails from "./CategoryDetails";
-import Nav from "./Nav";
+import type { LaureateResult } from "./SearchResults";
 
-function App() {
-  const [searchResults, setSearchResults] = useState([]);
+const App = () => {
+  const [searchResults, setSearchResults] = useState<LaureateResult[]>([]);
 
   return (
     <BrowserRouter>
@@ -21,11 +22,10 @@ function App() {
           path="/search-results"
           element={<SearchResults searchResults={searchResults} />}
         />
-        {/* CategoryDetails now automatically gets the category from the URL */}
         <Route path="/category/:category" element={<CategoryDetails />} />
       </Routes>
     </BrowserRouter>
   );
-}
+};
 
 export default App;
