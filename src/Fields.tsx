@@ -1,9 +1,14 @@
-import React from "react";
 import { Link } from "react-router-dom";
 import "./Fields.css"; // CSS 파일 import
 
+interface Category {
+  name: string;
+  label: string;
+  image: string;
+}
+
 function Fields() {
-  const categories = [
+  const categories: Category[] = [
     {
       name: "medicine",
       label: "Medicine",
