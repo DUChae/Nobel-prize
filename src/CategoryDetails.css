@@ -61,3 +61,35 @@
   font-style: italic;
   margin-top: 20px;
 }
+.section-title {
+  margin-top: 10px;
+  margin-bottom: 6px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #222;
+  border-left: 4px solid #0077ff;
+  padding-left: 6px;
+}
+
+/* 수상자 목록 */
+.laureates-list {
+  padding-left: 20px;
+  margin-bottom: 12px;
+}
+
+.laureate-item {
+  font-size: 1rem;
+  margin-bottom: 4px;
+}
+
+/* Motivation */
+.motivation {
+  font-size: 0.95rem;
+  line-height: 1.4;
+  background: #f7f9ff;
+  padding: 10px 12px;
+  border-radius: 6px;
+  border: 1px solid #dce3ff;
+  color: #333;
+  margin-bottom: 12px;
+}
