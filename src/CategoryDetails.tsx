@@ -3,7 +3,6 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import "./CategoryDetails.css";
 
-// API 응답 구조 정확히 정의
 interface Laureate {
   id: string;
   firstname: string;
@@ -22,16 +21,13 @@ interface NobelResponse {
 }
 
 const CategoryDetails = () => {
-  // URL 파라미터 타입 명시
   const { category } = useParams<{ category: string }>();
 
-  // 상태 타입 정의
   const [winners, setWinners] = useState<Prize[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // category 없으면 조기 리턴
     if (!category) {
       setError("Category is not selected.");
       setLoading(false);
@@ -65,20 +61,9 @@ const CategoryDetails = () => {
     fetchWinners();
   }, [category]);
 
-  // 로딩 상태
-  if (loading) {
-    return <div className="loading">Loading winners...</div>;
-  }
-
-  // 에러 상태
-  if (error) {
-    return <div className="error">Error: {error}</div>;
-  }
-
-  // 카테고리 없음
-  if (!category) {
-    return <div>Invalid category.</div>;
-  }
+  if (loading) return <div className="loading">Loading winners...</div>;
+  if (error) return <div className="error">Error: {error}</div>;
+  if (!category) return <div>Invalid category.</div>;
 
   return (
     <section className="category-details">
@@ -90,34 +75,46 @@ const CategoryDetails = () => {
         <p>No winners found for this category.</p>
       ) : (
         <ul className="prize-list">
-          {winners.map((prize) => (
-            // prize.year는 고유 → key로 사용
-            <li key={prize.year} className="prize-item">
-              <h3>{prize.year}</h3>
-              {prize.laureates && prize.laureates.length > 0 ? (
-                <ul className="laureates-list">
-                  {prize.laureates.map((laureate) => (
-                    <li key={laureate.id} className="laureate-item">
-                      <div>
+          {winners.map((prize, index) => {
+            const motivation =
+              prize.laureates && prize.laureates.length > 0
+                ? prize.laureates[0].motivation
+                : null;
+
+            return (
+              <li key={`${prize.year}-${index}`} className="prize-item">
+                {/* 1. 연도 */}
+                <h2>{prize.year}</h2>
+
+                <h3 className="section-title">Laureates</h3>
+                {/* 2. 이름 목록 */}
+                {prize.laureates && prize.laureates.length > 0 ? (
+                  <ul className="laureates-list">
+                    {prize.laureates.map((laureate) => (
+                      <li key={laureate.id} className="laureate-item">
                         <strong>
                           {laureate.firstname} {laureate.surname || ""}
                         </strong>
-                      </div>
-                      {laureate.motivation && (
-                        <p className="motivation">
-                          <em>"{laureate.motivation}"</em>
-                        </p>
-                      )}
-                    </li>
-                  ))}
-                </ul>
-              ) : (
-                <p className="no-laureates">
-                  No laureates recorded for this prize.
-                </p>
-              )}
-            </li>
-          ))}
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p className="no-laureates">
+                    No laureates recorded for this prize.
+                  </p>
+                )}
+
+                {motivation && (
+                  <>
+                    <h4 className="section-title">Motivation</h4>
+                    <p className="motivation">
+                      <em>{motivation}</em>
+                    </p>
+                  </>
+                )}
+              </li>
+            );
+          })}
         </ul>
       )}
     </section>
