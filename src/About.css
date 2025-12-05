@@ -1,0 +1,56 @@
+.about-container {
+  max-width: 900px;
+  margin: 4rem auto;
+  padding: 2rem;
+  line-height: 1.7;
+  color: #333;
+}
+
+.about-container h1 {
+  font-size: 2.5rem;
+  text-align: center;
+  margin-bottom: 2rem;
+  color: #1a1a1a;
+}
+
+.about-container h2 {
+  font-size: 1.8rem;
+  margin-top: 2.5rem;
+  color: #2c5282;
+}
+
+.about-text {
+  margin-bottom: 1.5rem;
+  font-size: 1.1rem;
+}
+
+.feature-list {
+  background: #f7fafc;
+  padding: 1.5rem;
+  border-radius: 8px;
+  margin: 1.5rem 0;
+}
+
+.feature-list li {
+  margin-bottom: 0.8rem;
+  padding-left: 0.5rem;
+}
+
+.about-source {
+  font-size: 0.9rem;
+  color: #666;
+  text-align: center;
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 1px solid #eee;
+}
+
+/* 모바일 대응 */
+@media (max-width: 768px) {
+  .about-container {
+    padding: 1.5rem;
+  }
+  .about-container h1 {
+    font-size: 2rem;
+  }
+}
