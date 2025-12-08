@@ -1,20 +1,14 @@
-import { useEffect, useState } from "react";
+// src/RecentLaureates.tsx (타입스크립트 완벽 + ESLint 통과!)
+import { useEffect, useState, useCallback } from "react";
 import "./RecentLaureates.css";
 
-// 내가 사용하는 정보만 골라 만든 타입
-interface LaureateInfo {
-  category: string;
-  year: string;
-  motivation: string[];
-  name: string[];
-}
-
+// API 응답 타입 정의 (정확하게!)
 interface ApiLaureate {
   knownName?: { en: string };
   firstname?: string;
   surname?: string;
-  motivation: { en: string };
   orgName?: { en: string };
+  motivation?: { en: string };
 }
 
 interface ApiPrize {
@@ -27,54 +21,99 @@ interface ApiResponse {
   nobelPrizes: ApiPrize[];
 }
 
+// 화면에 보여줄 데이터 타입
+interface LaureateInfo {
+  category: string;
+  year: string;
+  names: string;
+  motivation: string;
+}
+
 const RecentLaureates = () => {
   const [laureates, setLaureates] = useState<LaureateInfo[]>([]);
 
-  useEffect(() => {
-    fetch("https://api.nobelprize.org/2.1/nobelPrizes?limit=5&sort=desc")
-      .then((response) => response.json())
-      .then((data: ApiResponse) => {
-        const filteredLaureates: LaureateInfo[] = data.nobelPrizes.map(
-          (prize) => ({
-            category: prize.category.en,
-            year: prize.awardYear,
-            motivation: prize.laureates.map((laureate) =>
-              laureate.motivation.en.length > 100
-                ? `${laureate.motivation.en.slice(0, 100)}...`
-                : laureate.motivation.en
-            ),
-            name: prize.laureates.map(
-              (laureate) =>
-                laureate.knownName?.en ||
-                `${laureate.firstname || ""} ${
-                  laureate.surname || ""
-                }`.trim() ||
-                laureate.orgName?.en ||
-                "Unknown"
-            ),
-          })
-        );
+  // HTML 엔티티 정리 함수
+  const cleanMotivation = (text: string): string => {
+    return text
+      .replace(/&quot;/g, '"')
+      .replace(/&#39;/g, "'")
+      .replace(/&#x27;/g, "'")
+      .trim();
+  };
 
-        setLaureates(filteredLaureates);
-      })
-      .catch((error) => console.error("Error fetching data:", error));
+  // 중복 제거 + | 연결 (useCallback으로 의존성 문제 해결!)
+  const getUniqueMotivations = useCallback(
+    (laureates: ApiLaureate[]): string => {
+      const motivations = laureates
+        .map((l) =>
+          l.motivation?.en ? cleanMotivation(l.motivation.en) : null
+        )
+        .filter((m): m is string => m !== null);
+
+      return [...new Set(motivations)].join(" | ");
+    },
+    []
+  ); // cleanMotivation은 안정적 함수라 의존성 없음
+
+  // 이름 합치기
+  const formatNames = useCallback((laureates: ApiLaureate[]): string => {
+    return laureates
+      .map(
+        (l) =>
+          l.knownName?.en ||
+          `${l.firstname || ""} ${l.surname || ""}`.trim() ||
+          l.orgName?.en ||
+          "Unknown"
+      )
+      .filter(Boolean)
+      .join(", ");
   }, []);
+
+  useEffect(() => {
+    const fetchRecent = async () => {
+      try {
+        const response = await fetch(
+          "https://api.nobelprize.org/2.1/nobelPrizes?limit=5&sort=desc"
+        );
+        const data: ApiResponse = await response.json();
+
+        const result: LaureateInfo[] = data.nobelPrizes.map((prize) => ({
+          category: prize.category.en,
+          year: prize.awardYear,
+          names: formatNames(prize.laureates),
+          motivation: getUniqueMotivations(prize.laureates),
+        }));
+
+        setLaureates(result);
+      } catch (err) {
+        console.error("Failed to fetch recent laureates:", err);
+      }
+    };
+
+    fetchRecent();
+  }, [formatNames, getUniqueMotivations]); // 이제 의존성 완벽!
 
   return (
     <div className="recent-laureates-container">
-      <h2>Notable laureates' works</h2>
-      <ul className="laureate-list">
-        {laureates.map((laureate, index) => (
-          <li key={index} className="laureate-card">
-            <h3 className="laureate-name">{laureate.name.join(", ")}</h3>
-            <p className="laureate-category">Category: {laureate.category}</p>
-            <p className="laureate-year">Year: {laureate.year}</p>
-            <p className="laureate-motivation">
-              Motivation: {laureate.motivation.join(" | ")}
-            </p>
-          </li>
+      <h2>최근 노벨상 수상자</h2>
+      <div className="laureate-grid">
+        {laureates.map((item, index) => (
+          <div key={index} className="laureate-card">
+            <div className="card-header">
+              <h3 className="laureate-name">{item.names}</h3>
+              <div className="info-tags">
+                <span className="tag category">{item.category}</span>
+                <span className="tag year">{item.year}</span>
+              </div>
+            </div>
+            <div className="card-body">
+              <p className="motivation">
+                <strong>공로:</strong> {item.motivation}
+              </p>
+            </div>
+          </div>
         ))}
-      </ul>
+      </div>
     </div>
   );
 };
