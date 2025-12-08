@@ -1,42 +1,86 @@
+/* RecentLaureates.css */
 .recent-laureates-container {
-  padding: 20px;
+  padding: 2rem 1rem;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
-.laureate-list {
-  display: flex;
-  overflow-x: auto;
-  gap: 20px;
-  padding: 10px;
+.recent-laureates-container h2 {
+  text-align: center;
+  margin-bottom: 2rem;
+  font-size: 2rem;
+  color: #1a1a1a;
+}
+
+.laureate-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1.5rem;
 }
 
 .laureate-card {
-  min-width: 300px;
-  max-width: 300px;
-  padding: 15px;
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  background-color: #f9f9f9;
-  display: flex;
-  flex-direction: column;
-  box-sizing: border-box;
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s, box-shadow 0.2s;
+  height: fit-content; /* 핵심! 내용에 따라 높이 자동 조절 */
+}
+
+.laureate-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
+}
+
+.card-header {
+  margin-bottom: 1rem;
 }
 
 .laureate-name {
-  font-size: 1.2rem;
-  font-weight: bold;
-  margin-bottom: 8px;
-  white-space: nowrap; /* 줄바꿈 방지 */
-  overflow: hidden; /* 카드 영역을 넘을 시 숨기기 */
-  text-overflow: ellipsis; /* 카드가 넘칠 때 '...' 표시 */
+  margin: 0 0 0.75rem 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #1a1a1a;
+  line-height: 1.4;
 }
 
-.laureate-category,
-.laureate-year,
-.laureate-motivation {
-  margin-bottom: 6px;
+.info-tags {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
 }
 
-.laureate-motivation {
-  font-size: 0.9rem;
-  color: #555;
+.tag {
+  background: #f0f4f8;
+  color: #2c5282;
+  padding: 0.35rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.tag.year {
+  background: #e6f3ff;
+  color: #0066cc;
+}
+
+.card-body {
+  line-height: 1.6;
+}
+
+.motivation {
+  margin: 0;
+  color: #2d3748;
+  font-size: 0.98rem;
+}
+
+.motivation strong {
+  color: #1a1a1a;
+}
+
+/* 모바일에서도 예쁘게 */
+@media (max-width: 640px) {
+  .laureate-grid {
+    grid-template-columns: 1fr;
+  }
 }
