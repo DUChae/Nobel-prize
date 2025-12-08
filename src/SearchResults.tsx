@@ -33,52 +33,76 @@ interface SearchResultsProps {
 
 const SearchResults: React.FC<SearchResultsProps> = ({ searchResults }) => {
   if (!searchResults || searchResults.length === 0) {
-    return <div>검색 결과가 없습니다.</div>;
+    return <div className="no-results">검색 결과가 없습니다.</div>;
   }
 
   return (
     <div className="search-results">
-      {searchResults && searchResults.length > 0 ? (
-        <>
-          <h2>검색 결과</h2>
-          <ul>
-            {searchResults.map((result, index) => (
-              <li key={index}>
-                <h3>
-                  {result.knownName?.en || result.fullName?.en || "이름 없음"}
-                </h3>
+      <h2>검색 결과 ({searchResults.length}명)</h2>
+      <ul className="results-list">
+        {searchResults.map((result, index) => {
+          const name =
+            result.knownName?.en || result.fullName?.en || "이름 없음";
+          const prize = result.nobelPrizes?.[0];
+          const birth = result.birth;
+          const death = result.death;
+          const affiliation = result.affiliations?.[0]?.name?.en;
 
-                <p>
-                  수상 연도: {result.nobelPrizes?.[0]?.awardYear || "정보 없음"}
-                </p>
-                <p>
-                  수상 종류:{" "}
-                  {result.nobelPrizes?.[0]?.category?.en || "정보 없음"}
-                </p>
+          return (
+            <li key={index} className="result-item">
+              <h3 className="laureate-name">{name}</h3>
 
-                <p>
-                  출생 국가: {result.birth?.place?.country?.en || "정보 없음"}
-                </p>
-                <p>출생 도시: {result.birth?.place?.city?.en || "정보 없음"}</p>
+              {/* 수상 정보 */}
+              {prize && (
+                <div className="info-group">
+                  {prize.awardYear && <p>수상 연도: {prize.awardYear}</p>}
+                  {prize.category?.en && <p>수상 분야: {prize.category.en}</p>}
+                </div>
+              )}
 
-                <p>
-                  사망 국가: {result.death?.place?.country?.en || "정보 없음"}
-                </p>
-                <p>사망 도시: {result.death?.place?.city?.en || "정보 없음"}</p>
+              {/* 출생 정보 - 하나라도 있으면 표시 */}
+              {birth &&
+                (birth.date ||
+                  birth.place?.country?.en ||
+                  birth.place?.city?.en) && (
+                  <div className="info-group">
+                    {birth.date && <p>출생일: {birth.date}</p>}
+                    {birth.place?.country?.en && (
+                      <p>출생 국가: {birth.place.country.en}</p>
+                    )}
+                    {birth.place?.city?.en && (
+                      <p>출생 도시: {birth.place.city.en}</p>
+                    )}
+                  </div>
+                )}
 
-                <p>출생일: {result.birth?.date || "정보 없음"}</p>
-                <p>사망일: {result.death?.date || "정보 없음"}</p>
+              {/* 사망 정보 - 살아있으면 안 나옴, 죽었으면 표시 */}
+              {death &&
+                (death.date ||
+                  death.place?.country?.en ||
+                  death.place?.city?.en) && (
+                  <div className="info-group">
+                    {death.date && <p>사망일: {death.date}</p>}
+                    {death.place?.country?.en && (
+                      <p>사망 국가: {death.place.country.en}</p>
+                    )}
+                    {death.place?.city?.en && (
+                      <p>사망 도시: {death.place.city.en}</p>
+                    )}
+                  </div>
+                )}
 
-                <p>성별: {result.gender || "정보 없음"}</p>
+              {/* 성별 */}
+              {result.gender && result.gender !== "unknown" && (
+                <p>성별: {result.gender === "male" ? "남성" : "여성"}</p>
+              )}
 
-                <p>소속: {result.affiliations?.[0]?.name?.en || "정보 없음"}</p>
-              </li>
-            ))}
-          </ul>
-        </>
-      ) : (
-        <div className="no-results">검색 결과가 없습니다.</div>
-      )}
+              {/* 소속 */}
+              {affiliation && <p>소속: {affiliation}</p>}
+            </li>
+          );
+        })}
+      </ul>
     </div>
   );
 };
