@@ -4,9 +4,9 @@
 
 ![Nobel Prize Explorer Homepage](/public/images/메인.png)
 
-![Category Details Page](/public/images/)
+![Category Details Page](/public/images/카테고리별_수상자.png)
 
-![Search Results Page](screenshots/screenshot-search.png)
+![Search Results Page](/public/images/검색결과.png)
 **실시간 데모**: [https://nobel-prize.vercel.app](https://nobel-prize-sooty.vercel.app)  
 **GitHub**: [github.com/DUChae/Nobel-prize](https://github.com/DUChae/Nobel-prize)
 
