@@ -108,7 +108,7 @@ const RecentLaureates = () => {
             </div>
             <div className="card-body">
               <p className="motivation">
-                <strong>공로:</strong> {item.motivation}
+                <strong>Motivation:</strong> {item.motivation}
               </p>
             </div>
           </div>
