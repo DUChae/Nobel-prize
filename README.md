@@ -2,10 +2,12 @@
 
 **노벨상 수상자 탐색 웹 애플리케이션**
 
-![Nobel Prize Explorer](https://nobel-prize.vercel.app/og-image.png)  
-_(실제 배포 사이트 스크린샷)_
+![Nobel Prize Explorer Homepage](/public/images/메인.png)
 
-**실시간 데모**: [https://nobel-prize.vercel.app](https://nobel-prize.vercel.app)  
+![Category Details Page](/public/images/)
+
+![Search Results Page](screenshots/screenshot-search.png)
+**실시간 데모**: [https://nobel-prize.vercel.app](https://nobel-prize-sooty.vercel.app)  
 **GitHub**: [github.com/DUChae/Nobel-prize](https://github.com/DUChae/Nobel-prize)
 
 ---
