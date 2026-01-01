@@ -1,56 +1,152 @@
 .about-container {
-  max-width: 900px;
-  margin: 4rem auto;
-  padding: 2rem;
-  line-height: 1.7;
-  color: #333;
+  max-width: 1000px;
+  margin: 5rem auto;
+  padding: 3rem;
+  border-radius: 28px;
+
+  background: linear-gradient(180deg, #ffffff 0%, #f4f7ff 100%);
+  box-shadow: 0 40px 60px rgba(0, 0, 0, 0.08);
+
+  color: #0f172a;
+  line-height: 1.85;
+
+  position: relative;
+  overflow: hidden;
 }
 
+/* 상단 은은한 라이트 효과 */
+.about-container::before {
+  content: "";
+  position: absolute;
+  top: -80px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 600px;
+  height: 200px;
+  background: radial-gradient(
+    circle,
+    rgba(99, 102, 241, 0.25),
+    transparent 70%
+  );
+  filter: blur(40px);
+  z-index: 0;
+}
+
+/* 제목 영역 */
 .about-container h1 {
-  font-size: 2.5rem;
+  font-size: 3.2rem;
   text-align: center;
-  margin-bottom: 2rem;
-  color: #1a1a1a;
+  margin-bottom: 1.5rem;
+  letter-spacing: -0.04em;
+  font-weight: 800;
+  color: #111827;
+  position: relative;
+  z-index: 2;
 }
 
 .about-container h2 {
-  font-size: 1.8rem;
-  margin-top: 2.5rem;
-  color: #2c5282;
+  font-size: 2rem;
+  margin-top: 3rem;
+  color: #1f2937;
+  font-weight: 700;
+}
+
+.about-container h3 {
+  font-size: 1.35rem;
+  margin-top: 2rem;
+  color: #1f2937;
+  font-weight: 700;
 }
 
 .about-text {
-  margin-bottom: 1.5rem;
-  font-size: 1.1rem;
+  font-size: 1.15rem;
+  margin-bottom: 1.2rem;
+  position: relative;
+  z-index: 2;
 }
 
+/* “주요 기능” → 진짜 트렌디한 카드 UI */
 .feature-list {
-  background: #f7fafc;
-  padding: 1.5rem;
-  border-radius: 8px;
-  margin: 1.5rem 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-top: 1.2rem;
+  padding: 0;
 }
 
 .feature-list li {
-  margin-bottom: 0.8rem;
-  padding-left: 0.5rem;
+  list-style: none;
+  padding: 1.1rem 1.2rem;
+
+  background: rgba(255, 255, 255, 0.75);
+  border-radius: 16px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.06);
+  backdrop-filter: blur(8px);
+
+  font-size: 1.05rem;
+  font-weight: 500;
+
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
+.feature-list li:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 25px 40px rgba(0, 0, 0, 0.12);
+}
+
+/* 출처 카드 */
 .about-source {
-  font-size: 0.9rem;
-  color: #666;
+  margin-top: 4rem;
+  padding: 2rem;
+
+  font-size: 0.95rem;
   text-align: center;
-  margin-top: 3rem;
-  padding-top: 2rem;
-  border-top: 1px solid #eee;
+
+  background: #ffffff;
+  border-radius: 18px;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.06);
 }
 
-/* 모바일 대응 */
+/* 등장 애니메이션 */
+.about-container * {
+  opacity: 0;
+  animation: fadeUp 0.6s ease forwards;
+}
+
+.about-container h1 {
+  animation-delay: 0.05s;
+}
+.about-text {
+  animation-delay: 0.13s;
+}
+.feature-list {
+  animation-delay: 0.22s;
+}
+.about-source {
+  animation-delay: 0.35s;
+}
+
+@keyframes fadeUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 모바일 */
 @media (max-width: 768px) {
   .about-container {
-    padding: 1.5rem;
+    padding: 2rem;
   }
+
   .about-container h1 {
-    font-size: 2rem;
+    font-size: 2.4rem;
+  }
+
+  .feature-list {
+    grid-template-columns: 1fr;
   }
 }
