@@ -1,146 +1,119 @@
-.search-results {
-  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-    sans-serif;
-  max-width: 1000px;
-  margin: 2rem auto;
-  padding: 2rem;
-  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-  border-radius: 16px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+.search-results-wrapper {
+  max-width: 850px;
+  margin: 60px auto;
+  padding: 0 20px;
 }
 
-.search-results h2 {
-  font-size: 2rem;
-  font-weight: 700;
-  color: #1e293b;
-  margin: 0 0 2rem 0;
-  text-align: center;
-  background: linear-gradient(90deg, #1e40af, #7c3aed);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  letter-spacing: -0.5px;
+.results-header {
+  margin-bottom: 40px;
+  border-bottom: 2px solid #1d1d1f;
+  padding-bottom: 10px;
 }
 
-.search-results ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: grid;
-  gap: 1.5rem;
-}
-
-/* 카드 디자인 - 완전 새로워짐 */
-.search-results li {
-  background: white;
-  border-radius: 16px;
-  padding: 1.8rem;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08), 0 4px 10px rgba(0, 0, 0, 0.04);
-  border: 1px solid #e2e8f0;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  position: relative;
-  overflow: hidden;
-}
-
-.search-results li::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 6px;
-  height: 100%;
-  background: linear-gradient(180deg, #3b82f6, #8b5cf6);
-  border-radius: 0 16px 16px 0;
-}
-
-.search-results li:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12),
-    0 8px 20px rgba(59, 130, 246, 0.15);
-  border-color: #93c5fd;
-}
-
-.search-results li:hover::before {
-  width: 8px;
-}
-
-/* 이름 - 제일 중요하니까 강조 */
-.search-results h3 {
+.results-count {
   font-size: 1.5rem;
   font-weight: 700;
-  color: #1e293b;
-  margin: 0 0 1rem 0;
-  line-height: 1.3;
+  color: #1d1d1f;
 }
 
-/* 정보 그룹별로 깔끔하게 구분 */
-.info-group {
-  margin: 1rem 0;
-  padding: 1rem 0;
-  border-top: 1px dashed #e2e8f0;
+.results-count span {
+  color: #86868b;
+  margin-left: 8px;
 }
 
-.info-group:first-of-type {
-  border-top: none;
-  padding-top: 0;
-  margin-top: 0;
+.result-card-archive {
+  background: #fff;
+  border: 1px solid #d2d2d7;
+  border-radius: 0; /* 각진 디자인이 더 전문적인 아카이브 느낌을 줌 */
+  padding: 40px;
+  margin-bottom: 24px;
+  transition: background 0.2s ease;
 }
 
-.info-group p {
-  margin: 0.5rem 0;
-  font-size: 1rem;
-  color: #475569;
+.result-card-archive:hover {
+  background: #fbfbfd;
+}
+
+.card-top-archive {
+  margin-bottom: 32px;
+}
+
+.prize-info {
+  display: flex;
+  gap: 12px;
+  font-size: 14px;
+  font-weight: 700;
+  color: #0071e3;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+}
+
+.archive-name {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #1d1d1f;
+  letter-spacing: -0.04em;
+}
+
+.archive-details-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+  margin-bottom: 32px;
+}
+
+.archive-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.archive-item.full-row {
+  grid-column: span 2;
+}
+
+.archive-item .label {
+  font-size: 11px;
+  font-weight: 700;
+  color: #86868b;
+  text-transform: uppercase;
+}
+
+.archive-item .val {
+  font-size: 15px;
+  color: #1d1d1f;
+  font-weight: 500;
+}
+
+.archive-motivation {
+  padding-top: 24px;
+  border-top: 1px solid #d2d2d7;
+}
+
+.archive-motivation .label {
+  font-size: 11px;
+  font-weight: 700;
+  color: #0071e3;
+  display: block;
+  margin-bottom: 12px;
+}
+
+.motivation-text {
+  font-size: 17px;
   line-height: 1.6;
+  color: #1d1d1f;
+  word-break: keep-all;
+  font-weight: 500;
 }
 
-.info-group p strong {
-  color: #1e293b;
-  font-weight: 600;
-}
-
-/* 태그 스타일 (수상 분야 등) */
-.tag {
-  display: inline-block;
-  background: linear-gradient(135deg, #3b82f6, #8b5cf6);
-  color: white;
-  padding: 0.35rem 0.75rem;
-  border-radius: 20px;
-  font-size: 0.8rem;
-  font-weight: 600;
-  margin-right: 0.5rem;
-  margin-top: 0.25rem;
-}
-
-/* 결과 없음 */
-.no-results {
-  text-align: center;
-  padding: 4rem 2rem;
-  color: #64748b;
-  font-size: 1.2rem;
-  background: white;
-  border-radius: 16px;
-  border: 2px dashed #cbd5e1;
-}
-
-/* 모바일 최적화 */
-@media (max-width: 768px) {
-  .search-results {
-    margin: 1rem;
-    padding: 1.5rem;
-    border-radius: 12px;
+@media (max-width: 600px) {
+  .archive-details-grid {
+    grid-template-columns: 1fr;
   }
-
-  .search-results h2 {
-    font-size: 1.7rem;
+  .archive-item.full-row {
+    grid-column: span 1;
   }
-
-  .search-results li {
-    padding: 1.5rem;
-  }
-
-  .search-results h3 {
-    font-size: 1.35rem;
+  .archive-name {
+    font-size: 1.8rem;
   }
 }
