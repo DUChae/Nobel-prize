@@ -1,95 +1,138 @@
-.category-details {
-  font-family: Arial, sans-serif;
-  margin: 20px;
-  padding: 20px;
-  background-color: #f9f9f9;
-  border: 1px solid #ddd;
-  border-radius: 8px;
+/* 전체 레이아웃 */
+.category-details-wrapper {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 60px 20px;
 }
 
-.category-details h2 {
-  font-size: 24px;
-  color: #333;
-  margin-bottom: 16px;
+/* 상단 헤더 섹션 */
+.category-header {
+  text-align: center;
+  margin-bottom: 80px;
 }
 
-.category-details ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-.category-details li {
-  margin-bottom: 12px;
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 6px;
-  background-color: #fff;
-}
-
-.category-details li ul {
-  list-style-type: disc;
-  padding-left: 20px;
-  margin-top: 8px;
+.eyebrow {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: #0071e3; /* Apple Blue */
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
   margin-bottom: 8px;
 }
 
-.category-details li ul li {
-  border: none;
-  background-color: transparent;
-  padding: 4px 0;
+.category-title {
+  font-size: 3.5rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: #1d1d1f;
+  margin-bottom: 12px;
 }
 
-.category-details strong {
-  color: #555;
-  font-weight: bold;
+.category-description {
+  font-size: 1.2rem;
+  color: #86868b;
 }
 
-.category-details p {
-  margin: 4px 0;
+/* 카드 그리드 */
+.prize-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
 }
 
-.category-details .error {
-  color: red;
-  font-size: 16px;
-  font-weight: bold;
-  margin-top: 20px;
+/* 애플 스타일 카드 */
+.prize-card-apple {
+  display: flex;
+  align-items: flex-start;
+  background: #ffffff;
+  border-radius: 24px;
+  padding: 32px;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+  border: 1px solid rgba(0, 0, 0, 0.02);
 }
 
-.category-details .loading {
-  font-size: 16px;
-  color: #555;
-  font-style: italic;
-  margin-top: 20px;
+.prize-card-apple:hover {
+  transform: scale(1.015);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
 }
-.section-title {
-  margin-top: 10px;
-  margin-bottom: 6px;
-  font-size: 1.1rem;
+
+/* 왼쪽 연도 표시 */
+.prize-year {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1d1d1f;
+  min-width: 100px;
+  padding-top: 4px;
+}
+
+/* 오른쪽 콘텐츠 */
+.prize-content {
+  flex: 1;
+  border-left: 1px solid #d2d2d7; /* 얇은 연한 선으로 구분 */
+  padding-left: 32px;
+  margin-left: 10px;
+}
+
+.laureate-name-apple {
+  font-size: 1.4rem;
   font-weight: 600;
-  color: #222;
-  border-left: 4px solid #0077ff;
-  padding-left: 6px;
+  color: #1d1d1f;
+  margin-bottom: 8px;
+  letter-spacing: -0.01em;
 }
 
-/* 수상자 목록 */
-.laureates-list {
-  padding-left: 20px;
-  margin-bottom: 12px;
+/* Motivation 스타일링 */
+.motivation-box-apple {
+  margin-top: 16px;
 }
 
-.laureate-item {
-  font-size: 1rem;
-  margin-bottom: 4px;
+.motivation-text {
+  font-size: 1.05rem;
+  line-height: 1.5;
+  color: #424245;
+  font-weight: 400;
+  position: relative;
 }
 
-/* Motivation */
-.motivation {
-  font-size: 0.95rem;
-  line-height: 1.4;
-  background: #f7f9ff;
-  padding: 10px 12px;
-  border-radius: 6px;
-  border: 1px solid #dce3ff;
-  color: #333;
-  margin-bottom: 12px;
+/* 로딩/에러 상태 */
+.loading-state {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50vh;
+}
+
+.spinner {
+  width: 30px;
+  height: 30px;
+  border: 3px solid #d2d2d7;
+  border-top-color: #0071e3;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* 모바일 대응 */
+@media (max-width: 768px) {
+  .prize-card-apple {
+    flex-direction: column;
+  }
+  .prize-year {
+    margin-bottom: 12px;
+  }
+  .prize-content {
+    border-left: none;
+    padding-left: 0;
+    margin-left: 0;
+  }
+  .category-title {
+    font-size: 2.5rem;
+  }
 }
