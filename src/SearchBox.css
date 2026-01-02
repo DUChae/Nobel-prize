@@ -1,63 +1,139 @@
-/* 전체 컨테이너 */
-.search-container {
+/* SearchBox.css */
+.apple-search-wrapper {
   width: 100%;
-  max-width: 800px; /* 최대 너비 설정 */
-  margin: 50px auto;
-  padding: 20px;
-  background-color: #f9f9f9;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-width: 940px;
+  margin: 0 auto;
+  padding: 0 20px;
+  position: relative;
+  z-index: 10; /* 타이틀보다 위에 오도록 설정 */
+  /* 타이틀 영역 쪽으로 60px 만큼 끌어올림 */
+  transform: translateY(-50%);
 }
 
-/* 제목 */
-
-/* form 스타일 */
-form {
+.apple-search-form {
+  background: rgba(
+    255,
+    255,
+    255,
+    0.95
+  ); /* 약간의 투명도를 주면 더 고급스럽습니다 */
+  backdrop-filter: blur(20px); /* 배경 흐림 효과 */
+  padding: 12px 12px 12px 32px;
+  border-radius: 980px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15); /* 그림자를 좀 더 깊게 주어 띄워진 느낌 강조 */
   display: flex;
-  flex-direction: row; /* 가로로 배치 */
-  justify-content: space-between; /* 각 항목 사이에 여백을 두고 */
-  align-items: center; /* 세로로 가운데 정렬 */
-  gap: 20px; /* 각 필드 간 간격 */
+  align-items: center;
 }
 
-/* 입력 필드 스타일 */
-input {
-  width: 30%; /* 각 입력 필드의 너비를 30%로 설정 */
-  padding: 12px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  font-size: 1rem;
-  box-sizing: border-box; /* 패딩과 테두리가 포함되게 */
+.apple-search-form:focus-within {
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+  transform: translateY(-2px);
 }
 
-/* 입력 필드 포커스 스타일 */
-input:focus {
-  border-color: #007bff;
+.input-group {
+  display: flex;
+  flex: 1;
+  align-items: center;
+}
+
+.field-unit {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding-right: 20px;
+}
+
+.field-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: #1d1d1f;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 4px;
+}
+
+.field-unit input {
+  background: transparent;
+  border: none;
+  font-size: 15px;
+  color: #1d1d1f;
+  padding: 0;
+  width: 100%;
+  font-weight: 500;
+}
+
+.field-unit input::placeholder {
+  color: #86868b;
+  font-weight: 400;
+}
+
+.field-unit input:focus {
   outline: none;
-  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
 }
 
-/* 버튼 스타일 */
-button {
-  width: 20%; /* 버튼 너비는 입력 필드보다 작게 설정 */
-  padding: 12px;
-  background-color: #007bff;
+/* 필드 사이의 얇은 세로선 */
+.divider {
+  width: 1px;
+  height: 32px;
+  background-color: #d2d2d7;
+  margin-right: 20px;
+}
+
+/* 검색 버튼: 애플 블루 포인트 */
+.search-button {
+  background-color: #0071e3;
   color: white;
   border: none;
-  border-radius: 5px;
-  font-size: 1.1rem;
+  border-radius: 980px;
+  padding: 14px 28px;
+  font-size: 16px;
+  font-weight: 600;
   cursor: pointer;
-  box-sizing: border-box;
-  transition: background-color 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
 }
 
-/* 버튼 hover 스타일 */
-button:hover {
-  background-color: #0056b3;
+.search-button:hover {
+  background-color: #0077ed;
+  box-shadow: 0 4px 12px rgba(0, 113, 227, 0.3);
 }
 
-/* 버튼 disabled 상태 */
-button:disabled {
-  background-color: #d3d3d3;
-  cursor: not-allowed;
+.search-button:active {
+  transform: scale(0.96);
+}
+
+/* 모바일 대응: 가로가 좁아지면 세로로 전환 */
+@media (max-width: 768px) {
+  .apple-search-form {
+    flex-direction: column;
+    border-radius: 24px;
+    padding: 24px;
+    gap: 20px;
+  }
+
+  .input-group {
+    flex-direction: column;
+    width: 100%;
+    align-items: flex-start;
+  }
+
+  .divider {
+    width: 100%;
+    height: 1px;
+    margin: 16px 0;
+  }
+
+  .field-unit {
+    width: 100%;
+    padding-right: 0;
+  }
+
+  .search-button {
+    width: 100%;
+    justify-content: center;
+    padding: 16px;
+  }
 }
