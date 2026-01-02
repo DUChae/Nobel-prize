@@ -1,35 +1,79 @@
-.navbar {
+/* Nav.css */
+.apple-navbar {
+  position: fixed; /* 상단 고정 */
+  top: 0;
+  left: 0;
   width: 100%;
-  background-color: white;
-  padding: 15px 0;
+  height: 48px; /* 애플 표준 내비게이션 높이 */
+  background: rgba(255, 255, 255, 0.8); /* 반투명 배경 */
+  backdrop-filter: blur(20px); /* 유리 효과 */
+  -webkit-backdrop-filter: blur(20px);
+  z-index: 9999;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   display: flex;
-  align-items: center; /* 수직 중앙 정렬 */
-  text-align: left;
+  justify-content: center;
+  transition: background 0.3s ease;
 }
 
-.navbarTitle {
-  text-decoration: none; /* Link 태그의 기본 밑줄 제거 */
+.navbar-content {
+  width: 100%;
+  max-width: 1000px; /* 전체 앱 너비와 통일 */
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 22px;
 }
 
-.navbarTitle h1 {
-  font-size: 36px; /* Nobel Winners의 크기를 더 크게 설정 */
-  font-weight: bold; /* 글자 굵게 설정 */
-  margin-left: 20px;
-  color: black;
-  text-decoration: none; /* h1 태그의 밑줄도 제거 */
-}
-
-.navbarTitle h1:hover {
-  text-decoration: underline; /* 마우스를 올리면 밑줄 표시 */
-}
-
-.navbarMenu {
-  color: black;
-  margin-left: 20px;
-  font-size: 18px; /* 나머지 메뉴의 크기는 기본보다 작게 설정 */
+/* 로고 스타일: 굵고 깔끔하게 */
+.navbar-logo {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #1d1d1f;
   text-decoration: none;
+  letter-spacing: -0.02em;
+  transition: opacity 0.3s ease;
 }
 
-.navbarMenu:hover {
-  text-decoration: underline;
+.navbar-logo:hover {
+  opacity: 1;
+}
+
+/* 메뉴 링크 영역 */
+.navbar-links {
+  display: flex;
+  gap: 50px; /* 메뉴 사이 간격 */
+}
+
+.navbar-link {
+  font-size: 1.5rem; /* 애플은 메뉴 폰트를 작고 정갈하게 씁니다 */
+  font-weight: 400;
+  color: #1d1d1f;
+  text-decoration: none;
+  opacity: 0.8;
+  transition: all 0.3s ease;
+}
+
+.navbar-link:hover {
+  opacity: 1;
+  color: #0071e3; /* 애플 블루 포인트 */
+}
+
+/* 현재 페이지 강조 */
+.navbar-link.active {
+  opacity: 1;
+  font-weight: 600;
+}
+
+/* 모바일 대응 */
+@media (max-width: 768px) {
+  .navbar-content {
+    padding: 0 16px;
+  }
+  .navbar-logo {
+    font-size: 17px;
+  }
+  .navbar-links {
+    gap: 20px;
+  }
 }
