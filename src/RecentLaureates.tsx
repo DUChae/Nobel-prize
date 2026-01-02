@@ -1,8 +1,16 @@
-// src/RecentLaureates.tsx (타입스크립트 완벽 + ESLint 통과!)
 import { useEffect, useState, useCallback } from "react";
 import "./RecentLaureates.css";
 
-// API 응답 타입 정의 (정확하게!)
+// 1. 카테고리 매핑 데이터를 컴포넌트 외부로 이동 (useEffect 의존성 오류 해결)
+const CATEGORY_MAP: Record<string, string> = {
+  Physics: "물리학상",
+  Chemistry: "화학상",
+  "Physiology or Medicine": "생리의학상",
+  Literature: "문학상",
+  Peace: "평화상",
+  "Economic Sciences": "경제학상",
+};
+
 interface ApiLaureate {
   knownName?: { en: string };
   firstname?: string;
@@ -21,7 +29,6 @@ interface ApiResponse {
   nobelPrizes: ApiPrize[];
 }
 
-// 화면에 보여줄 데이터 타입
 interface LaureateInfo {
   category: string;
   year: string;
@@ -29,10 +36,31 @@ interface LaureateInfo {
   motivation: string;
 }
 
+// 구글 번역 응답 형식을 위한 타입 정의 (any 제거)
+type GoogleTranslateResponse = [[[string, string, ...unknown[]]], ...unknown[]];
+
 const RecentLaureates = () => {
   const [laureates, setLaureates] = useState<LaureateInfo[]>([]);
+  const [isTranslating, setIsTranslating] = useState(false);
 
-  // HTML 엔티티 정리 함수
+  const translateToKorean = async (text: string): Promise<string> => {
+    if (!text) return "";
+    try {
+      const response = await fetch(
+        `https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=ko&dt=t&q=${encodeURIComponent(
+          text
+        )}`
+      );
+      const data: GoogleTranslateResponse = await response.json();
+
+      // 타입 가드와 함께 안전하게 추출
+      return data[0].map((item) => item[0]).join("");
+    } catch (error) {
+      console.error("번역 실패:", error);
+      return text;
+    }
+  };
+
   const cleanMotivation = (text: string): string => {
     return text
       .replace(/&quot;/g, '"')
@@ -41,7 +69,6 @@ const RecentLaureates = () => {
       .trim();
   };
 
-  // 중복 제거 + | 연결 (useCallback으로 의존성 문제 해결!)
   const getUniqueMotivations = useCallback(
     (laureates: ApiLaureate[]): string => {
       const motivations = laureates
@@ -49,13 +76,11 @@ const RecentLaureates = () => {
           l.motivation?.en ? cleanMotivation(l.motivation.en) : null
         )
         .filter((m): m is string => m !== null);
-
       return [...new Set(motivations)].join(" | ");
     },
     []
-  ); // cleanMotivation은 안정적 함수라 의존성 없음
+  );
 
-  // 이름 합치기
   const formatNames = useCallback((laureates: ApiLaureate[]): string => {
     return laureates
       .map(
@@ -72,44 +97,61 @@ const RecentLaureates = () => {
   useEffect(() => {
     const fetchRecent = async () => {
       try {
+        setIsTranslating(true);
         const response = await fetch(
           "https://api.nobelprize.org/2.1/nobelPrizes?limit=5&sort=desc"
         );
         const data: ApiResponse = await response.json();
 
-        const result: LaureateInfo[] = data.nobelPrizes.map((prize) => ({
-          category: prize.category.en,
-          year: prize.awardYear,
-          names: formatNames(prize.laureates),
-          motivation: getUniqueMotivations(prize.laureates),
-        }));
+        const result: LaureateInfo[] = await Promise.all(
+          data.nobelPrizes.map(async (prize) => {
+            const englishMotivation = getUniqueMotivations(prize.laureates);
+            const koreanMotivation = await translateToKorean(englishMotivation);
+
+            return {
+              // 외부 상수를 사용하여 의존성 문제 해결
+              category: CATEGORY_MAP[prize.category.en] || prize.category.en,
+              year: prize.awardYear,
+              names: formatNames(prize.laureates),
+              motivation: koreanMotivation,
+            };
+          })
+        );
 
         setLaureates(result);
       } catch (err) {
         console.error("Failed to fetch recent laureates:", err);
+      } finally {
+        setIsTranslating(false);
       }
     };
 
     fetchRecent();
-  }, [formatNames, getUniqueMotivations]); // 이제 의존성 완벽!
+  }, [formatNames, getUniqueMotivations]); // CATEGORY_MAP은 외부 상수이므로 넣지 않아도 됩니다.
 
   return (
-    <div className="recent-laureates-container">
-      <h2>최근 노벨상 수상자</h2>
-      <div className="laureate-grid">
+    <div className="recent-laureates-wrapper">
+      <header className="recent-header">
+        <span className="eyebrow">The Nobel Prize</span>
+        <h2 className="section-title">최근 수상자</h2>
+        {isTranslating && (
+          <p className="translating-text">한국어로 번역 중...</p>
+        )}
+      </header>
+
+      <div className="laureate-masonry">
         {laureates.map((item, index) => (
-          <div key={index} className="laureate-card">
-            <div className="card-header">
-              <h3 className="laureate-name">{item.names}</h3>
-              <div className="info-tags">
-                <span className="tag category">{item.category}</span>
-                <span className="tag year">{item.year}</span>
-              </div>
+          <div key={index} className="apple-laureate-card">
+            <div className="card-top">
+              <span className="card-year">{item.year}</span>
+              <span className="card-dot">•</span>
+              <span className="card-category">{item.category}</span>
             </div>
-            <div className="card-body">
-              <p className="motivation">
-                <strong>Motivation:</strong> {item.motivation}
-              </p>
+
+            <h3 className="card-names">{item.names}</h3>
+
+            <div className="card-bottom">
+              <p className="card-motivation">{item.motivation}</p>
             </div>
           </div>
         ))}
