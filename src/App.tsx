@@ -7,23 +7,29 @@ import Contact from "./Contact";
 import SearchResults from "./SearchResults";
 import CategoryDetails from "./CategoryDetails";
 import type { LaureateResult } from "./SearchResults";
+import "./App.css"; // CSS 연결 확인
 
 const App = () => {
   const [searchResults, setSearchResults] = useState<LaureateResult[]>([]);
 
   return (
     <BrowserRouter>
-      <Nav />
-      <Routes>
-        <Route path="/" element={<Home onSearch={setSearchResults} />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/contact" element={<Contact />} />
-        <Route
-          path="/search-results"
-          element={<SearchResults searchResults={searchResults} />}
-        />
-        <Route path="/category/:category" element={<CategoryDetails />} />
-      </Routes>
+      {/* 애플 스타일의 고정 상단바를 위해 main-wrapper 사용 */}
+      <div className="app-viewport">
+        <Nav />
+        <main className="main-content">
+          <Routes>
+            <Route path="/" element={<Home onSearch={setSearchResults} />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route
+              path="/search-results"
+              element={<SearchResults searchResults={searchResults} />}
+            />
+            <Route path="/category/:category" element={<CategoryDetails />} />
+          </Routes>
+        </main>
+      </div>
     </BrowserRouter>
   );
 };
