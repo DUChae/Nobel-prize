@@ -1,86 +1,131 @@
 /* RecentLaureates.css */
-.recent-laureates-container {
-  padding: 2rem 1rem;
-  max-width: 1200px;
+.recent-laureates-wrapper {
+  padding: 100px 20px;
+  max-width: 1100px;
   margin: 0 auto;
 }
 
-.recent-laureates-container h2 {
+.recent-header {
   text-align: center;
-  margin-bottom: 2rem;
-  font-size: 2rem;
-  color: #1a1a1a;
+  margin-bottom: 60px;
 }
 
-.laureate-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 1.5rem;
-}
-
-.laureate-card {
-  background: white;
-  border-radius: 12px;
-  padding: 1.5rem;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  transition: transform 0.2s, box-shadow 0.2s;
-  height: fit-content; /* 핵심! 내용에 따라 높이 자동 조절 */
-}
-
-.laureate-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
-}
-
-.card-header {
-  margin-bottom: 1rem;
-}
-
-.laureate-name {
-  margin: 0 0 0.75rem 0;
-  font-size: 1.25rem;
+.eyebrow {
+  display: block;
+  font-size: 14px;
   font-weight: 600;
-  color: #1a1a1a;
-  line-height: 1.4;
+  color: #0071e3; /* Apple Blue */
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin-bottom: 10px;
 }
 
-.info-tags {
+.section-title {
+  font-size: 3rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: #1d1d1f;
+}
+
+/* 그리드 레이아웃: 시원시원한 카드 배치 */
+.laureate-masonry {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 24px;
+}
+
+/* 애플 스타일 카드 디자인 */
+.apple-laureate-card {
+  background: #ffffff;
+  border-radius: 24px;
+  padding: 32px;
+  border: 1px solid rgba(0, 0, 0, 0.05); /* 아주 연한 테두리 */
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.04);
+  transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
   display: flex;
-  gap: 0.75rem;
-  flex-wrap: wrap;
+  flex-direction: column;
 }
 
-.tag {
-  background: #f0f4f8;
-  color: #2c5282;
-  padding: 0.35rem 0.75rem;
-  border-radius: 20px;
-  font-size: 0.875rem;
-  font-weight: 500;
+.apple-laureate-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+  border-color: rgba(0, 0, 0, 0.1);
 }
 
-.tag.year {
-  background: #e6f3ff;
-  color: #0066cc;
+/* 상단 메타 정보 (연도, 카테고리) */
+.card-top {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #86868b; /* Apple Gray */
+  margin-bottom: 16px;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
 }
 
-.card-body {
+.card-dot {
+  opacity: 0.3;
+}
+
+/* 수상자 이름 */
+.card-names {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #1d1d1f;
+  line-height: 1.25;
+  margin-bottom: 20px;
+  letter-spacing: -0.02em;
+}
+
+/* Motivation 텍스트 */
+.card-bottom {
+  border-top: 1px solid #f5f5f7;
+  padding-top: 20px;
+  margin-top: auto; /* 내용이 적어도 하단에 고정되게 */
+}
+
+.card-motivation {
+  font-size: 1rem;
   line-height: 1.6;
+  color: #424245;
+  font-weight: 400;
+  /* 말줄임표 없이 전체 내용 보여주되, 깔끔하게 정렬 */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
-.motivation {
-  margin: 0;
-  color: #2d3748;
-  font-size: 0.98rem;
+/* 모바일 대응 */
+@media (max-width: 768px) {
+  .section-title {
+    font-size: 2.2rem;
+  }
+  .apple-laureate-card {
+    padding: 24px;
+  }
+  .laureate-masonry {
+    grid-template-columns: 1fr; /* 모바일은 한 줄로 시원하게 */
+  }
+}
+/* 기존 CSS 아래에 추가 */
+.translating-text {
+  font-size: 14px;
+  color: #0071e3;
+  margin-top: 10px;
+  font-weight: 500;
+  animation: pulse 1.5s infinite;
 }
 
-.motivation strong {
-  color: #1a1a1a;
-}
-
-/* 모바일에서도 예쁘게 */
-@media (max-width: 640px) {
-  .laureate-grid {
-    grid-template-columns: 1fr;
+@keyframes pulse {
+  0% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.5;
   }
 }
