@@ -7,14 +7,13 @@ import Contact from "./Contact";
 import SearchResults from "./SearchResults";
 import CategoryDetails from "./CategoryDetails";
 import type { LaureateResult } from "./SearchResults";
-import "./App.css"; // CSS 연결 확인
+import "./App.css";
 
 const App = () => {
   const [searchResults, setSearchResults] = useState<LaureateResult[]>([]);
 
   return (
     <BrowserRouter>
-      {/* 애플 스타일의 고정 상단바를 위해 main-wrapper 사용 */}
       <div className="app-viewport">
         <Nav />
         <main className="main-content">
@@ -26,6 +25,7 @@ const App = () => {
               path="/search-results"
               element={<SearchResults searchResults={searchResults} />}
             />
+            {/* URL의 :category 부분을 CategoryDetails 내부에서 읽을 것입니다 */}
             <Route path="/category/:category" element={<CategoryDetails />} />
           </Routes>
         </main>
