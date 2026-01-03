@@ -1,14 +1,26 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { motion } from "framer-motion"; // 이제 설치했으니 사용 가능합니다!
+import { motion, AnimatePresence } from "framer-motion";
 import "./CategoryDetails.css";
 
-// 1. 사라졌던 타입(Prize 등) 정의 추가
+// --- 타입 정의 ---
 interface Laureate {
   id: string;
   firstname: string;
   surname?: string;
   motivation?: string;
+}
+
+// 상세 정보 전용 인터페이스 (any 에러 해결)
+interface LaureateDetailData {
+  born: string;
+  bornCity?: string;
+  bornCountry?: string;
+  died: string;
+  diedCity?: string;
+  diedCountry?: string;
+  gender: string;
+  affiliations: Array<{ name: string; city: string; country: string }>;
 }
 
 interface Prize {
@@ -21,11 +33,108 @@ interface NobelResponse {
   prizes: Prize[];
 }
 
+// --- 개별 수상자 항목 컴포넌트 ---
+const LaureateItem = ({ laureate }: { laureate: Laureate }) => {
+  const [details, setDetails] = useState<LaureateDetailData | null>(null);
+  const [isOpen, setIsOpen] = useState(false);
+  const [loadingDetails, setLoadingDetails] = useState(false);
+
+  // 날짜 포맷팅 함수
+  const formatDate = (dateString: string) => {
+    if (!dateString || dateString === "0000-00-00") return null;
+    const [year, month, day] = dateString.split("-");
+    if (month === "00" && day === "00") return `${year}년`;
+    if (day === "00") return `${year}년 ${parseInt(month)}월`;
+    return `${year}년 ${parseInt(month)}월 ${parseInt(day)}일`;
+  };
+
+  const toggleDetails = async () => {
+    if (!isOpen && !details) {
+      setLoadingDetails(true);
+      try {
+        const res = await fetch(
+          `https://api.nobelprize.org/v1/laureate.json?id=${laureate.id}`
+        );
+        const data = await res.json();
+        setDetails(data.laureates[0]);
+      } catch {
+        console.error("상세 정보 로드 실패");
+      } finally {
+        setLoadingDetails(false);
+      }
+    }
+    setIsOpen(!isOpen);
+  };
+
+  const affiliation = details?.affiliations?.[0]?.name;
+  const hasValidAffiliation =
+    affiliation &&
+    affiliation !== "no affiliation" &&
+    affiliation !== "None" &&
+    affiliation.trim() !== "";
+
+  return (
+    <div className="laureate-item-container">
+      <h3 className="laureate-name-apple" onClick={toggleDetails}>
+        {laureate.firstname} {laureate.surname || ""}
+        <span className={`expand-icon ${isOpen ? "open" : ""}`}>+</span>
+      </h3>
+
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            className="laureate-bio-box"
+          >
+            {loadingDetails ? (
+              <p className="loading-bio">상세 정보 로딩 중...</p>
+            ) : details ? (
+              <div className="bio-content">
+                {formatDate(details.born) && (
+                  <p>
+                    📍 <strong>출생:</strong> {formatDate(details.born)}{" "}
+                    {details.bornCity &&
+                      `(${details.bornCity}, ${details.bornCountry})`}
+                  </p>
+                )}
+                {details.died &&
+                  details.died !== "0000-00-00" &&
+                  formatDate(details.died) && (
+                    <p>
+                      ⚰️ <strong>서거:</strong> {formatDate(details.died)}{" "}
+                      {details.diedCity &&
+                        `(${details.diedCity}, ${details.diedCountry})`}
+                    </p>
+                  )}
+                {hasValidAffiliation && (
+                  <p>
+                    🏛️ <strong>소속:</strong> {affiliation}
+                  </p>
+                )}
+                {details.gender && (
+                  <p>
+                    👤 <strong>성별:</strong>{" "}
+                    {details.gender === "male" ? "남성" : "여성"}
+                  </p>
+                )}
+              </div>
+            ) : null}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+};
+
+// --- 메인 컴포넌트 ---
 const CategoryDetails = () => {
   const { category } = useParams<{ category: string }>();
   const [winners, setWinners] = useState<Prize[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const [translations, setTranslations] = useState<Record<string, string>>({});
 
   useEffect(() => {
     if (!category) {
@@ -36,21 +145,18 @@ const CategoryDetails = () => {
 
     const fetchWinners = async () => {
       try {
-        setLoading(true); // 이제 사용됨 (Unused 에러 해결)
-        setError(null); // 이제 사용됨 (Unused 에러 해결)
-
+        setLoading(true);
+        setError(null);
         const response = await fetch(
           `https://api.nobelprize.org/v1/prize.json?category=${category}`
         );
-
         if (!response.ok)
           throw new Error(`HTTP ${response.status}: Failed to fetch`);
-
         const data: NobelResponse = await response.json();
-        setWinners(data.prizes || []); // 이제 사용됨 (Unused 에러 해결)
+        setWinners(data.prizes || []);
+        translateAllMotivations(data.prizes || []);
       } catch (err) {
-        const errorMsg = err instanceof Error ? err.message : "Network error";
-        setError(errorMsg);
+        setError(err instanceof Error ? err.message : "Network error");
       } finally {
         setLoading(false);
       }
@@ -58,6 +164,30 @@ const CategoryDetails = () => {
 
     fetchWinners();
   }, [category]);
+
+  const translateAllMotivations = async (prizes: Prize[]) => {
+    const uniqueMotivations = Array.from(
+      new Set(
+        prizes.flatMap((p) =>
+          p.laureates?.map((l) => l.motivation).filter(Boolean)
+        )
+      )
+    ) as string[];
+
+    for (const text of uniqueMotivations) {
+      try {
+        const res = await fetch(
+          `https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=ko&dt=t&q=${encodeURIComponent(
+            text
+          )}`
+        );
+        const data = await res.json();
+        setTranslations((prev) => ({ ...prev, [text]: data[0][0][0] }));
+      } catch {
+        // 번역 실패 시 조용히 넘어감
+      }
+    }
+  };
 
   if (loading)
     return (
@@ -81,10 +211,10 @@ const CategoryDetails = () => {
 
       <div className="prize-grid">
         {winners.map((prize, index) => {
-          const motivation = prize.laureates?.[0]?.motivation;
+          const rawMotivation = prize.laureates?.[0]?.motivation || "";
+          const translatedMotivation = translations[rawMotivation];
 
           return (
-            // 2. motion 사용 (motion is defined but never used 에러 해결)
             <motion.article
               key={`${prize.year}-${index}`}
               className="prize-card-apple"
@@ -94,21 +224,24 @@ const CategoryDetails = () => {
               transition={{ delay: (index % 5) * 0.1 }}
             >
               <div className="prize-year">{prize.year}</div>
-
               <div className="prize-content">
                 <div className="laureates-section">
-                  {/* 3. laureate 타입 정의 (any 형식 에러 해결) */}
                   {prize.laureates?.map((laureate: Laureate) => (
-                    <h3 key={laureate.id} className="laureate-name-apple">
-                      {laureate.firstname} {laureate.surname || ""}
-                    </h3>
+                    <LaureateItem key={laureate.id} laureate={laureate} />
                   ))}
                 </div>
 
-                {motivation && (
+                {rawMotivation && (
                   <div className="motivation-box-apple">
-                    <p className="motivation-text">
-                      {motivation.replace(/"/g, "")}
+                    <p className="motivation-text-kr">
+                      {translatedMotivation ? (
+                        translatedMotivation.replace(/"/g, "")
+                      ) : (
+                        <span className="translating">업적 번역 중...</span>
+                      )}
+                    </p>
+                    <p className="motivation-text-en">
+                      {rawMotivation.replace(/"/g, "")}
                     </p>
                   </div>
                 )}
