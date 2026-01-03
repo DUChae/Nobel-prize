@@ -30,22 +30,22 @@ const SearchBox: React.FC<SearchBoxProps> = ({ onSearch }) => {
       const filteredData: LaureateResult[] =
         data.laureates?.filter((laureate: LaureateResult) => {
           const fullName = laureate.fullName?.en || "";
-          return fullName.toLowerCase().includes(query.toLowerCase()); // startsWith보다 includes가 검색 경험에 좋음
+          return fullName.toLowerCase().includes(query.toLowerCase());
         }) || [];
 
       onSearch(filteredData);
       navigate("/search-results");
     } catch (error) {
-      console.error("Error fetching data:", error);
+      console.error("검색 중 오류 발생:", error);
     }
   };
 
   return (
     <motion.div
       className="apple-search-wrapper"
-      initial={{ opacity: 0, scale: 0.95 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 0.5 }}
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: -60 }} // 타이틀 쪽으로 끌어올림
+      transition={{ duration: 0.8, ease: "easeOut" }}
     >
       <form className="apple-search-form" onSubmit={handleSubmit}>
         <div className="input-group">
@@ -65,7 +65,7 @@ const SearchBox: React.FC<SearchBoxProps> = ({ onSearch }) => {
               type="text"
               value={year}
               onChange={(e) => setYear(e.target.value)}
-              placeholder="연도 (예: 2025)"
+              placeholder="연도 (예: 2024)"
             />
           </div>
           <div className="divider" />
